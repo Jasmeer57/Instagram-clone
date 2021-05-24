@@ -5,6 +5,7 @@ import {auth, db} from './firebase';
 import Modal from '@material-ui/core/Modal';
 import {makeStyles} from '@material-ui/core/styles';
 import {Button, Input} from '@material-ui/core';
+import {ImageUpload} from './ImageUpload';
 
 
 
@@ -97,6 +98,7 @@ function App() {
   }
   return (
     <div className="app">
+
           <Modal
             open={openSignIn}
             onClose={()=>setOpenSignIn(false)}>
