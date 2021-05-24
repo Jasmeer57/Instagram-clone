@@ -39,6 +39,7 @@ function App() {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [user,setUser]=useState(null);
+  const [openSignIn,setOpenSignIn]= useState(false);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -86,11 +87,19 @@ function App() {
 
     .catch((error)=>alert(error.message))
   }
+  const signIn = (event) => {
+    event.preventDefault();
+
+  auth
+    .signInWithEmailAndPassword(email,password)
+    .catch((error)=>alert(error.message))
+  setOpenSignIn(false);
+  }
   return (
     <div className="app">
           <Modal
-            open={open}
-            onClose={()=>setOpen(false)}>
+            open={openSignIn}
+            onClose={()=>setOpenSignIn(false)}>
             <div style={modalStyle} className={classes.paper}>
           <form className="app__signup">
               <center>
@@ -100,12 +109,12 @@ function App() {
                 alt=""
               />
               </center>
-            <Input 
-            placeholder="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            />
+            <Input
+              type="text"
+              placeholder="username"
+              value={username}
+              onChange={(e) => setEmail(e.target.value)}
+              />
             <Input 
             placeholder="email"
             type="text"
@@ -118,7 +127,7 @@ function App() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             />
-            <Button onClick={signUp}>Sign Up</Button>
+            <Button type="submit" onClick={signIn}>Sign In</Button>
           </form>
             </div>         
           </Modal>
@@ -130,13 +139,13 @@ function App() {
         alt=""/>
       </div>
      {user ? (
-       <Button onClick={()=> setOpen(true)}>Logout</Button>
+       <Button onClick={()=>auth.signOut()}>Logout</Button>
      ): (
+  <div className="app__loginContainer">
+     <Button type="submit" onClick ={()=>setOpenSignIn(true)}>Sign In</Button>
      <Button type="submit" onClick ={()=>setOpen(true)}>Sign Up</Button>
+     </div>
      )}
-
-      <Button type="submit" onClick ={()=>setOpen(true)}>Sign Up</Button>    
-
 
     <h1>Hello Jasmeer, you've started React.js</h1> 
     {
