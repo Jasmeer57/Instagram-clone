@@ -41,24 +41,19 @@ function App() {
   const [user,setUser]=useState(null);
 
   useEffect(() => {
-    auth.onAuthStateChanged((authUser) => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
     if (authUser) {
     // user has logged in
     console.log(authUser);
     setUser(authUser);
-    if (authUser.displayName){
-      // don't update username
-    } else{
-      // if we just created someone
-      return authUser.updateProfile({
-        displayName:username,
-      }); 
-    }
     } else {
     // user has logged out
     setUser(null);
     }
   })
+  return() => {
+    unsubscribe();
+  }
 }, [user,username]);
 
   useEffect(() =>{
@@ -74,6 +69,12 @@ function App() {
     event.preventDefault();
 
     auth.createUserWithEmailAndPassword(email,password)
+    .then((authUser)=>{
+      return authUser.user.updateProfile({
+        displayName:username
+      })
+    })
+
     .catch((error)=>alert(error.message))
   }
   return (
@@ -119,9 +120,13 @@ function App() {
         src="https://instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
         alt=""/>
       </div>
-     
+     {user ? (
+       <Button onClick={()=> setOpen(true)}>Logout</Button>
+     ): (
+     <Button type="submit" onClick ={()=>setOpen(true)}>Sign Up</Button>
+     )}
 
-    <Button type="submit" onClick ={()=>setOpen(true)}>Sign Up</Button>    
+      <Button type="submit" onClick ={()=>setOpen(true)}>Sign Up</Button>    
 
 
     <h1>Hello Jasmeer, you've started React.js</h1> 
