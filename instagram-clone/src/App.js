@@ -5,7 +5,7 @@ import {auth, db} from './firebase';
 import Modal from '@material-ui/core/Modal';
 import {makeStyles} from '@material-ui/core/styles';
 import {Button, Input} from '@material-ui/core';
-import {ImageUpload} from './ImageUpload';
+import ImageUpload from './ImageUpload';
 
 
 
@@ -98,7 +98,7 @@ function App() {
   }
   return (
     <div className="app">
-
+        <ImageUpload username={user.displayName}/>
           <Modal
             open={openSignIn}
             onClose={()=>setOpenSignIn(false)}>
@@ -115,7 +115,7 @@ function App() {
               type="text"
               placeholder="username"
               value={username}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
               />
             <Input 
             placeholder="email"
